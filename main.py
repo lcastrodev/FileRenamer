@@ -19,7 +19,6 @@ def update_preview():
     renamed_files.clear()
 
     folder = folder_var.get()
-    mode = mode_var.get()
     if not folder or not os.path.isdir(folder):
         return
 
@@ -38,11 +37,8 @@ def update_preview():
             continue
         new_name = filename[:second] + '+' + filename[second + 1:]
 
-        if mode == "plus_cotas":
-            if new_name.endswith('_SCT.jpg') or new_name.endswith('_SCT.jpeg'):
-                new_name = new_name.rsplit('_SCT', 1)[0] + '_COTAS.jpg'
-            else:
-                continue  # ignore if not ending in _SCT
+        if new_name.endswith('_SCT.jpg') or new_name.endswith('_SCT.jpeg'):
+            new_name = new_name.rsplit('_SCT', 1)[0] + '_cotas.jpg'
 
         original_files.append(filename)
         renamed_files.append(new_name)
@@ -111,8 +107,8 @@ root.minsize(800, 400)
 
 folder_var = tk.StringVar()
 mode_var = tk.StringVar(value="plus")
-backup_var = tk.BooleanVar(value=True)
-log_var = tk.BooleanVar(value=True)
+backup_var = tk.BooleanVar(value=False)
+log_var = tk.BooleanVar(value=False)
 original_files = []
 renamed_files = []
 
@@ -126,10 +122,6 @@ tk.Entry(frame_top, textvariable=folder_var, width=80, state='readonly').pack(si
 # Radio buttons
 frame_radio = tk.Frame(root)
 frame_radio.pack(pady=5)
-tk.Radiobutton(frame_radio, text="+", variable=mode_var, value="plus", command=update_preview).pack(side=tk.LEFT,
-                                                                                                    padx=10)
-tk.Radiobutton(frame_radio, text="+ e COTAS", variable=mode_var, value="plus_cotas", command=update_preview).pack(
-    side=tk.LEFT, padx=10)
 
 # Checkboxes
 frame_check = tk.Frame(root)
